@@ -9,6 +9,7 @@ The aim of EnumToYaml is to make YAML configurations easy to use, easily accessi
 ## How can I use EnumToYaml?
 EnumToYaml is primarly available to maven users.  
 To add it to your maven project use the following repository and dependency:  
+
     <repository>
       <id>articdive-repo</id>
       <url>https://nexus.articdive.de/repository/maven-public/</url>
