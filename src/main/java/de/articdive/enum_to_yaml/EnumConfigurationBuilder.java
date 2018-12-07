@@ -95,7 +95,7 @@ public class EnumConfigurationBuilder {
     /**
      * Builds the {@link EnumConfiguration} from this {@link EnumConfigurationBuilder}.
      *
-     * @return new EnumConfiguration {@link EnumConfiguration}
+     * @return new {@link EnumConfiguration}
      */
     public EnumConfiguration build() {
         return new EnumConfiguration(file, configurationEnums, dumperOptions);
