@@ -2,7 +2,7 @@
 name: Bug/Issue Report
 about: Report to hopefully fix unexpected or broken outcomes.
 title: ''
-labels: ''
+labels: BUG
 assignees: ''
 
 ---
