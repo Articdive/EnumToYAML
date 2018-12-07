@@ -61,6 +61,11 @@ public class EnumConfiguration {
 
     public void set(ConfigurationEnum configurationEnum, Object value) {
         configuration.set(configurationEnum.getPath(), value);
+        try {
+            configuration.save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
