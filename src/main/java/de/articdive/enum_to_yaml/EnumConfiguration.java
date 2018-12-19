@@ -32,6 +32,18 @@ public class EnumConfiguration {
     private YAMLConfiguration configuration;
 
     EnumConfiguration(File file, ConfigurationEnum[] configurationEnums, EnumConfigurationDumperOptions dumperOptions) {
+
+        try {
+            if (!file.getParentFile().mkdirs() && !file.getParentFile().isDirectory()) {
+                throw new IOException("Parent folder was a file, not directory");
+            }
+            if (!file.exists() && !file.createNewFile()) {
+                throw new IOException("File couldn't be created");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         YAMLConfiguration oldConfiguration = new YAMLConfiguration(file, dumperOptions);
         configuration = new YAMLConfiguration(file, dumperOptions);
         try {
