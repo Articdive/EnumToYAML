@@ -22,15 +22,23 @@ import de.articdive.enum_to_yaml.yaml.EnumConfigurationDumperOptions;
 import org.yaml.snakeyaml.DumperOptions.LineBreak;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 public class EnumConfigurationBuilder {
     private File file;
-    private ConfigurationEnum[] configurationEnums;
+    private List<ConfigurationEnum> configurationEnums;
     private EnumConfigurationDumperOptions dumperOptions = new EnumConfigurationDumperOptions();
 
     public <T extends Enum<T> & ConfigurationEnum> EnumConfigurationBuilder(File file, Class<T> configurationEnumClass) {
         this.file = file;
-        this.configurationEnums = configurationEnumClass.getEnumConstants();
+        this.configurationEnums = Arrays.asList(configurationEnumClass.getEnumConstants());
+    }
+
+    EnumConfigurationBuilder(File file, List<ConfigurationEnum> configurationEnums, EnumConfigurationDumperOptions dumperOptions) {
+        this.file = file;
+        this.configurationEnums = configurationEnums;
+        this.dumperOptions = dumperOptions;
     }
 
     /**
@@ -82,13 +90,34 @@ public class EnumConfigurationBuilder {
     }
 
     /**
-     * What {@link Character} should be used for in-java node separation?
+     * What {@link Character} should be used for programmatic node separation?
      *
      * @param separatorCharacter {@link Character}
      * @return this {@link EnumConfigurationBuilder}
      */
     public EnumConfigurationBuilder setSeparatorCharacter(char separatorCharacter) {
         dumperOptions.setSeparatorChar(separatorCharacter);
+        return this;
+    }
+
+    /**
+     * Adds ConfigurationEnumerations from other sources.
+     *
+     * @param enumsToAdd {@link ConfigurationEnum} to add
+     * @return this {@link EnumConfigurationBuilder}
+     */
+    public EnumConfigurationBuilder addConfigurationEnumeration(ConfigurationEnum... enumsToAdd) {
+        for (ConfigurationEnum enumToAdd : enumsToAdd) {
+            for (ConfigurationEnum configurationEnum : configurationEnums) {
+                if (enumToAdd.equals(configurationEnum)) {
+                    throw new IllegalArgumentException("You cannot add identical ConfigurationEnums!");
+                } else if (enumToAdd.getPath().equalsIgnoreCase(configurationEnum.getPath())) {
+                    throw new IllegalArgumentException("You cannot add two ConfigurationEnums with the same path!");
+                } else {
+                    configurationEnums.add(enumToAdd);
+                }
+            }
+        }
         return this;
     }
 

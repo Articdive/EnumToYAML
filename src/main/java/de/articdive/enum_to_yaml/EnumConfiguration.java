@@ -31,8 +31,7 @@ import java.util.Map;
 public class EnumConfiguration {
     private YAMLConfiguration configuration;
 
-    EnumConfiguration(File file, ConfigurationEnum[] configurationEnums, EnumConfigurationDumperOptions dumperOptions) {
-
+    EnumConfiguration(File file, List<ConfigurationEnum> configurationEnums, EnumConfigurationDumperOptions dumperOptions) {
         try {
             if (!file.getParentFile().mkdirs() && !file.getParentFile().isDirectory()) {
                 throw new IOException("Parent folder was a file, not directory");
@@ -42,8 +41,8 @@ public class EnumConfiguration {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            return;
         }
-
         YAMLConfiguration oldConfiguration = new YAMLConfiguration(file, dumperOptions);
         configuration = new YAMLConfiguration(file, dumperOptions);
         try {
