@@ -30,6 +30,8 @@ import java.util.Map;
 
 public class EnumConfiguration {
     private YAMLConfiguration configuration;
+    private YAMLConfiguration oldConfiguration;
+    private List<ConfigurationEnum> configurationEnums;
 
     EnumConfiguration(File file, List<ConfigurationEnum> configurationEnums, EnumConfigurationDumperOptions dumperOptions) {
         try {
@@ -43,19 +45,24 @@ public class EnumConfiguration {
             e.printStackTrace();
             return;
         }
-        YAMLConfiguration oldConfiguration = new YAMLConfiguration(file, dumperOptions);
-        configuration = new YAMLConfiguration(file, dumperOptions);
+        oldConfiguration = new YAMLConfiguration(file, dumperOptions);
         try {
             oldConfiguration.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        this.configurationEnums = configurationEnums;
+        configuration = new YAMLConfiguration(file, dumperOptions);
+        buildConfig();
+    }
+
+    private void buildConfig() {
+
         for (ConfigurationEnum configurationEnum : configurationEnums) {
             if (configurationEnum.getComments().length > 0) {
                 configuration.setComments(configurationEnum.getPath(), configurationEnum.getComments());
             }
-
             if (oldConfiguration.get(configurationEnum.getPath()) != null) {
                 configuration.set(configurationEnum.getPath(), oldConfiguration.get(configurationEnum.getPath()));
             } else {
@@ -398,5 +405,25 @@ public class EnumConfiguration {
         }
 
         return result;
+    }
+
+    /**
+     * Adds ConfigurationEnumerations from other sources.
+     *
+     * @param enumsToAdd {@link ConfigurationEnum} to add
+     */
+    public void addConfigurationEnumeration(ConfigurationEnum[] enumsToAdd) {
+        for (ConfigurationEnum enumToAdd : enumsToAdd) {
+            for (ConfigurationEnum configurationEnum : configurationEnums) {
+                if (enumToAdd.equals(configurationEnum)) {
+                    throw new IllegalArgumentException("You cannot add identical ConfigurationEnums!");
+                } else if (enumToAdd.getPath().equalsIgnoreCase(configurationEnum.getPath())) {
+                    throw new IllegalArgumentException("You cannot add two ConfigurationEnums with the same path!");
+                } else {
+                    configurationEnums.add(enumToAdd);
+                }
+            }
+        }
+        buildConfig();
     }
 }
