@@ -413,8 +413,9 @@ public class EnumConfiguration {
      * @param enumsToAdd {@link ConfigurationEnum} to add
      */
     public void addConfigurationEnumeration(ConfigurationEnum[] enumsToAdd) {
+        List<ConfigurationEnum> configurationEnums = new ArrayList<>();
         for (ConfigurationEnum enumToAdd : enumsToAdd) {
-            for (ConfigurationEnum configurationEnum : configurationEnums) {
+            for (ConfigurationEnum configurationEnum : this.configurationEnums) {
                 if (enumToAdd.equals(configurationEnum)) {
                     throw new IllegalArgumentException("You cannot add identical ConfigurationEnums!");
                 } else if (enumToAdd.getPath().equalsIgnoreCase(configurationEnum.getPath())) {
@@ -424,6 +425,7 @@ public class EnumConfiguration {
                 }
             }
         }
+        this.configurationEnums.addAll(configurationEnums);
         buildConfig();
     }
 }
