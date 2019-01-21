@@ -22,6 +22,7 @@ import de.articdive.enum_to_yaml.yaml.EnumConfigurationDumperOptions;
 import org.yaml.snakeyaml.DumperOptions.LineBreak;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class EnumConfigurationBuilder {
 
     public <T extends Enum<T> & ConfigurationEnum> EnumConfigurationBuilder(File file, Class<T> configurationEnumClass) {
         this.file = file;
-        this.configurationEnums = Arrays.asList(configurationEnumClass.getEnumConstants());
+        this.configurationEnums = new ArrayList<>(Arrays.asList(configurationEnumClass.getEnumConstants()));
     }
 
     EnumConfigurationBuilder(File file, List<ConfigurationEnum> configurationEnums, EnumConfigurationDumperOptions dumperOptions) {
