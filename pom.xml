@@ -40,24 +40,9 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>1.16</version>
-                <configuration>
-                    <licenseName>GNU Affero General Public License v3.0</licenseName>
-                    <licenseResolver>${project.basedir}/LICENSE</licenseResolver>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>first</id>
-                        <goals>
-                            <goal>add-third-party</goal>
-                        </goals>
-                        <phase>process-sources</phase>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -77,12 +62,6 @@
             <artifactId>snakeyaml</artifactId>
             <version>1.23</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
